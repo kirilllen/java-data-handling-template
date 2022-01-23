@@ -27,6 +27,11 @@ public class SimpleBigNumbersService implements BigNumbersService {
      */
     @Override
     public BigInteger getPrimaryNumber(int range) {
-        return null;
+        BigInteger[] simpleNumbers=new BigInteger[range];  //0-ой элемент массива будет числом 1
+        simpleNumbers[0]=new BigInteger("1");  //задаём первое значение
+        for (int i=1; i<range; i++){
+             simpleNumbers[i]=simpleNumbers[i-1].nextProbablePrime();
+         }
+        return simpleNumbers[range-1]; //т.к. например второе число будет иметь индекс [1]
     }
 }
