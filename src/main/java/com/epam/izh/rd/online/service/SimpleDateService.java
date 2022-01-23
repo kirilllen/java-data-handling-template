@@ -1,6 +1,7 @@
 package com.epam.izh.rd.online.service;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -16,7 +17,7 @@ public class SimpleDateService implements DateService {
      */
     @Override
     public String parseDate(LocalDate localDate) {
-        DateFormat dateFormat=DateFormat.getDateInstance(DateFormat.FULL);
+        DateFormat dateFormat=DateFormat.getDateInstance(DateFormat.SHORT);
         return dateFormat.format(localDate);
     }
 
@@ -27,9 +28,8 @@ public class SimpleDateService implements DateService {
      * @return дата и время
      */
     @Override
-    public LocalDateTime parseString(String string) {
-
-        return null;
+    public LocalDateTime parseString(String string)  {
+        return LocalDateTime.parse(string);
     }
 
     /**
