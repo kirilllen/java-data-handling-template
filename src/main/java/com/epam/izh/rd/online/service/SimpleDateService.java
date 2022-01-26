@@ -32,9 +32,16 @@ public class SimpleDateService implements DateService {
      * @return дата и время
      */
     @Override
-    public LocalDateTime parseString(String string)  {
+    public LocalDateTime parseString(String string) throws ParseException{
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        return LocalDateTime.parse(string, formatter);
+        LocalDateTime date;
+        try {
+            date=LocalDateTime.parse(string, formatter);
+        } catch (Exception e) {
+            e.printStackTrace();
+            date=null;
+        }
+        return date;
     }
 
     /**
