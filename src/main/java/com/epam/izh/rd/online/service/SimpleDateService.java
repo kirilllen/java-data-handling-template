@@ -1,19 +1,11 @@
 package com.epam.izh.rd.online.service;
 
-import javax.print.attribute.standard.DateTimeAtProcessing;
-import java.text.DateFormat;
-import java.text.ParseException;
+
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoField;
-import java.time.temporal.TemporalAccessor;
-import java.time.temporal.TemporalAdjuster;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.zip.DataFormatException;
 
-import static java.time.LocalDate.of;
 
 public class SimpleDateService implements DateService {
 
@@ -24,9 +16,9 @@ public class SimpleDateService implements DateService {
      * @return строка с форматом день-месяц-год(01-01-1970)
      */
     @Override
-    public String parseDate(LocalDate localDate) {
-        DateFormat dateFormat=DateFormat.getDateInstance(DateFormat.SHORT);
-        return dateFormat.format(localDate);
+    public String parseDate(LocalDate localDate) throws IllegalArgumentException{
+        DateTimeFormatter dateFormat=DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        return localDate.format(dateFormat);
     }
 
     /**
@@ -36,11 +28,10 @@ public class SimpleDateService implements DateService {
      * @return дата и время
      */
     @Override
-    public LocalDateTime parseString(String string) throws ParseException, DateTimeParseException {
+    public LocalDateTime parseString(String string) throws DateTimeParseException {
 
         DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDateTime date=LocalDateTime.parse(string,dtf2);
-        return date;
+        return LocalDateTime.parse(string,dtf2);
     }
 
     /**
