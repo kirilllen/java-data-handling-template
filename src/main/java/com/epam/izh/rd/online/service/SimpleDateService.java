@@ -65,7 +65,6 @@ public class SimpleDateService implements DateService {
                 leapYear=yearLong;
                 break;
             }
-
         }
         return leapYear;
     }
