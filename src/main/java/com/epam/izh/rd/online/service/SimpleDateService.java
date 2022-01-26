@@ -1,15 +1,19 @@
 package com.epam.izh.rd.online.service;
 
+import javax.print.attribute.standard.DateTimeAtProcessing;
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Year;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoField;
+import java.time.temporal.TemporalAccessor;
 import java.time.temporal.TemporalAdjuster;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.zip.DataFormatException;
+
+import static java.time.LocalDate.of;
 
 public class SimpleDateService implements DateService {
 
@@ -32,15 +36,10 @@ public class SimpleDateService implements DateService {
      * @return дата и время
      */
     @Override
-    public LocalDateTime parseString(String string) throws ParseException{
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDateTime date;
-        try {
-            date=LocalDateTime.parse(string, formatter);
-        } catch (Exception e) {
-            e.printStackTrace();
-            date=null;
-        }
+    public LocalDateTime parseString(String string) throws ParseException, DateTimeParseException {
+
+        DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime date=LocalDateTime.parse(string,dtf2);
         return date;
     }
 
