@@ -26,8 +26,13 @@ public class SimpleTextService implements TextService {
      */
     @Override
     public boolean isQuestionString(String text) {
-        char a=text.charAt(text.length()-1);
-        return a=='?';
+        if (text.length()!=0){
+            char a=text.charAt(text.length()-1);
+            return a=='?';
+        }
+        else {
+            return false;
+        }
     }
 
     /**
@@ -41,7 +46,6 @@ public class SimpleTextService implements TextService {
         StringBuilder str1=new StringBuilder(500);
         for(String ob : elements) {
             str1.append(ob);
-            str1.append(" ");
         }
         return str1.toString();
     }
@@ -74,10 +78,16 @@ public class SimpleTextService implements TextService {
      */
     @Override
     public boolean isPalindrome(String string) {
-        string=string.toLowerCase(Locale.ROOT);
-        StringBuilder s1=new StringBuilder(500);
-        s1.append(string);
+        String string2=string.toLowerCase(Locale.ROOT);
+        String string3=string2.replaceAll(" ","");
+        StringBuilder s1=new StringBuilder(string3.length());
+        s1.append(string3);
         s1.reverse();
-        return s1.toString().contentEquals(string);
+        if (string3.length()!=0) {
+            return s1.toString().contentEquals(string3);
+        }
+        else {
+            return false;
+        }
     }
 }
