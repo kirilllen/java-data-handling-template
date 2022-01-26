@@ -4,8 +4,12 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Year;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoField;
+import java.time.temporal.TemporalAdjuster;
 import java.util.Date;
+import java.util.zip.DataFormatException;
 
 public class SimpleDateService implements DateService {
 
@@ -29,7 +33,8 @@ public class SimpleDateService implements DateService {
      */
     @Override
     public LocalDateTime parseString(String string)  {
-        return LocalDateTime.parse(string);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        return LocalDateTime.parse(string, formatter);
     }
 
     /**
@@ -41,8 +46,7 @@ public class SimpleDateService implements DateService {
      */
     @Override
     public String convertToCustomFormat(LocalDate localDate, DateTimeFormatter formatter) {
-
-        return null;
+        return formatter.format(localDate);
     }
 
     /**
@@ -52,7 +56,18 @@ public class SimpleDateService implements DateService {
      */
     @Override
     public long getNextLeapYear() {
-        return 0;
+        Year year=Year.now();
+        long yearLong=year.getLong(ChronoField.YEAR);
+        long leapYear=0;
+        for(int i=0;i<4;i++){
+            yearLong+=1;
+            if (Year.isLeap(yearLong)) {
+                leapYear=yearLong;
+                break;
+            }
+
+        }
+        return leapYear;
     }
 
     /**
@@ -62,7 +77,7 @@ public class SimpleDateService implements DateService {
      */
     @Override
     public long getSecondsInYear(int year) {
-        return 0;
+        return (Year.isLeap(year)) ? 366*24*3600 : 365*24*3600;
     }
 
 
