@@ -1,5 +1,9 @@
 package com.epam.izh.rd.online.service;
 
+import java.io.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class SimpleRegExpService implements RegExpService {
 
     /**
@@ -10,8 +14,48 @@ public class SimpleRegExpService implements RegExpService {
      * @return обработанный текст
      */
     @Override
-    public String maskSensitiveData() {
-        return null;
+    public String maskSensitiveData() throws IOException {
+        BufferedReader reader = null;
+        String finalLine=null;
+        try {
+            reader=new BufferedReader(new FileReader("resources"+ File.pathSeparator+"sensitive_data.txt"));
+            String line=reader.readLine();
+            ; //для промежуточных результатов
+            String regExp="\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}";
+            Pattern pattern= Pattern.compile(regExp);
+            Matcher matcher=pattern.matcher(line);
+            String[] billNumber=new String[2]; //заранее знаем, что у нас два совпадения, если было бы неизвестно, то создали бы массив
+            int i=0;
+            while (matcher.find()) {
+                billNumber[i]=matcher.group();
+                System.out.println(billNumber[i]);
+                i++;
+            }
+            StringBuilder billNumberClosed1=new StringBuilder(100); //заранее знаем, что у нас два совпадения, если было бы неизвестно, то создали бы массив
+            StringBuilder billNumberClosed2=new StringBuilder(100);
+            billNumberClosed1.append(billNumber[0]);
+            billNumberClosed2.append(billNumber[1]);
+            for (int j=5; j<14; j++){
+                if(j!=9) {
+                    billNumberClosed1.setCharAt(j,'*');
+                    billNumberClosed2.setCharAt(j,'*');
+                }
+            }
+            String lineMid=line.replaceAll(billNumber[0], billNumberClosed1.toString());
+            finalLine=lineMid.replaceAll(billNumber[1], billNumberClosed2.toString());
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        finally {
+            if (reader!=null) {
+                reader.close();
+            }
+        }
+        return finalLine;
     }
 
     /**
