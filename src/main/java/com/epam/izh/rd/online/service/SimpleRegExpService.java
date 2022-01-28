@@ -18,9 +18,8 @@ public class SimpleRegExpService implements RegExpService {
         BufferedReader reader = null;
         String finalLine=null;
         try {
-            reader=new BufferedReader(new FileReader("resources"+ File.pathSeparator+"sensitive_data.txt"));
+            reader=new BufferedReader(new FileReader("src/main/resources/sensitive_data.txt"));
             String line=reader.readLine();
-            ; //для промежуточных результатов
             String regExp="\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}";
             Pattern pattern= Pattern.compile(regExp);
             Matcher matcher=pattern.matcher(line);
@@ -31,6 +30,7 @@ public class SimpleRegExpService implements RegExpService {
                 System.out.println(billNumber[i]);
                 i++;
             }
+            //для промежуточных результатов
             StringBuilder billNumberClosed1=new StringBuilder(100); //заранее знаем, что у нас два совпадения, если было бы неизвестно, то создали бы массив
             StringBuilder billNumberClosed2=new StringBuilder(100);
             billNumberClosed1.append(billNumber[0]);
