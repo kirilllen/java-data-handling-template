@@ -1,8 +1,11 @@
 package com.epam.izh.rd.online.service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+
+import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoField;
+
 
 public class SimpleDateService implements DateService {
 
@@ -13,8 +16,9 @@ public class SimpleDateService implements DateService {
      * @return строка с форматом день-месяц-год(01-01-1970)
      */
     @Override
-    public String parseDate(LocalDate localDate) {
-        return null;
+    public String parseDate(LocalDate localDate) throws IllegalArgumentException{
+        DateTimeFormatter dateFormat=DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        return localDate.format(dateFormat);
     }
 
     /**
@@ -24,8 +28,10 @@ public class SimpleDateService implements DateService {
      * @return дата и время
      */
     @Override
-    public LocalDateTime parseString(String string) {
-        return null;
+    public LocalDateTime parseString(String string) throws DateTimeParseException {
+
+        DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        return LocalDateTime.parse(string,dtf2);
     }
 
     /**
@@ -37,7 +43,7 @@ public class SimpleDateService implements DateService {
      */
     @Override
     public String convertToCustomFormat(LocalDate localDate, DateTimeFormatter formatter) {
-        return null;
+        return formatter.format(localDate);
     }
 
     /**
@@ -47,7 +53,17 @@ public class SimpleDateService implements DateService {
      */
     @Override
     public long getNextLeapYear() {
-        return 0;
+        Year year=Year.now();
+        long yearLong=year.getLong(ChronoField.YEAR);
+        long leapYear=0;
+        for(int i=0;i<4;i++){
+            yearLong+=1;
+            if (Year.isLeap(yearLong)) {
+                leapYear=yearLong;
+                break;
+            }
+        }
+        return leapYear;
     }
 
     /**
@@ -57,7 +73,7 @@ public class SimpleDateService implements DateService {
      */
     @Override
     public long getSecondsInYear(int year) {
-        return 0;
+        return (Year.isLeap(year)) ? 366*24*3600 : 365*24*3600;
     }
 
 

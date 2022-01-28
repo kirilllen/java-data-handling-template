@@ -1,5 +1,7 @@
 package com.epam.izh.rd.online.service;
 
+import java.util.Locale;
+
 public class SimpleTextService implements TextService {
 
     /**
@@ -13,7 +15,7 @@ public class SimpleTextService implements TextService {
      */
     @Override
     public String removeString(String base, String remove) {
-        return null; //TODO
+        return base.replaceAll(remove,"");
     }
 
     /**
@@ -24,7 +26,13 @@ public class SimpleTextService implements TextService {
      */
     @Override
     public boolean isQuestionString(String text) {
-        return false; //TODO
+        if (text.length()!=0){
+            char a=text.charAt(text.length()-1);
+            return a=='?';
+        }
+        else {
+            return false;
+        }
     }
 
     /**
@@ -35,7 +43,11 @@ public class SimpleTextService implements TextService {
      */
     @Override
     public String concatenate(String... elements) {
-        return null; //TODO
+        StringBuilder str1=new StringBuilder(500);
+        for(String ob : elements) {
+            str1.append(ob);
+        }
+        return str1.toString();
     }
 
     /**
@@ -47,7 +59,14 @@ public class SimpleTextService implements TextService {
      */
     @Override
     public String toJumpCase(String text) {
-        return null; //TODO
+        String a=""; //промежуточная строка
+        String jumpString=""; //прыгающая строка
+        for (int i=0; i<text.length(); i++){
+            a+=text.charAt(i);
+            jumpString+= i%2==0 ? a.toLowerCase(Locale.ROOT) : a.toUpperCase(Locale.ROOT);
+            a="";
+        }
+        return jumpString;
     }
 
     /**
@@ -59,6 +78,16 @@ public class SimpleTextService implements TextService {
      */
     @Override
     public boolean isPalindrome(String string) {
-       return false; //TODO
+        String string2=string.toLowerCase(Locale.ROOT);
+        String string3=string2.replaceAll(" ","");
+        StringBuilder s1=new StringBuilder(string3.length());
+        s1.append(string3);
+        s1.reverse();
+        if (string3.length()!=0) {
+            return s1.toString().contentEquals(string3);
+        }
+        else {
+            return false;
+        }
     }
 }
