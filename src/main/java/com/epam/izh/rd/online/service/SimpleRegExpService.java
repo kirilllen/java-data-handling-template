@@ -65,7 +65,37 @@ public class SimpleRegExpService implements RegExpService {
      * @return обработанный текст
      */
     @Override
-    public String replacePlaceholders(double paymentAmount, double balance) {
-        return null;
+    public String replacePlaceholders(double paymentAmount, double balance)  {
+        BufferedReader reader = null;
+        String line=null;
+        try {
+            reader=new BufferedReader(new FileReader("src/main/resources/sensitive_data.txt"));
+            line= reader.readLine();
+            String regExp="\\$\\{payment_amount}";
+            Pattern pattern= Pattern.compile(regExp);
+            Matcher matcher=pattern.matcher(line);
+
+
+            String regExp2="\\$\\{balance}";
+            Pattern pattern2=Pattern.compile(regExp2);
+            Matcher matcher2=pattern2.matcher(matcher.replaceAll(String.format("%.0f", paymentAmount)));
+            line=matcher2.replaceAll(String.format("%.0f",balance));
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (reader!=null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    return line;
+
     }
 }
