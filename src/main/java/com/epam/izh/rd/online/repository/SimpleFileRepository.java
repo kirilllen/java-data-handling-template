@@ -1,5 +1,11 @@
 package com.epam.izh.rd.online.repository;
 
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 public class SimpleFileRepository implements FileRepository {
 
     /**
@@ -10,7 +16,15 @@ public class SimpleFileRepository implements FileRepository {
      */
     @Override
     public long countFilesInDirectory(String path) {
-        return 0;
+
+        File dir1=new File (path);
+        File[] files = dir1.listFiles();
+        if (files!=null) {
+            return files.length;
+        }
+        else {
+            return 0;
+        }
     }
 
     /**
@@ -21,7 +35,22 @@ public class SimpleFileRepository implements FileRepository {
      */
     @Override
     public long countDirsInDirectory(String path) {
-        return 0;
+        long counter=0;
+        File dir0=new File (path);
+        if (dir0.isDirectory()) {
+            counter++;
+            String[] dirs=dir0.list();
+            File[] files=new File[dirs.length];
+            int i=0;
+            for (String element:dirs) {
+                files[i]=new File(path+File.pathSeparator+dirs[i]);
+                if (files[i].isDirectory()) {
+                    countDirsInDirectory(path+File.pathSeparator+dirs[i]);
+                }
+            }
+        }
+
+        return counter;
     }
 
     /**
@@ -32,7 +61,17 @@ public class SimpleFileRepository implements FileRepository {
      */
     @Override
     public void copyTXTFiles(String from, String to) {
-        return;
+        File dir=new File(from);
+        FileFilter filter = file -> !file.isDirectory() && file.getName().endsWith(".txt");
+        File[] files=dir.listFiles(filter);
+        try {
+            int i=0;
+            for (File file:files) {
+                Files.copy(Path.of(from + File.pathSeparator + Path.of(file.getName())), Path.of(to+ File.pathSeparator + Path.of(file.getName())));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
